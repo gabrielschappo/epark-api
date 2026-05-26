@@ -6,6 +6,7 @@ import com.epark.epark_api.repository.TicketRepository;
 import com.epark.epark_api.repository.VagaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
@@ -81,5 +82,9 @@ public class TicketService {
         vagaRepository.save(vaga);
 
         return ticketRepository.save(ticket);
+    }
+
+    public List<Ticket> listarTodos() {
+        return ticketRepository.findAll();
     }
 }

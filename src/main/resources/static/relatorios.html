@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-PARK PRO - Relatórios</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+    <div class="container-fluid">
+        <div class="row">
+            
+            <nav class="col-md-2 d-none d-md-block bg-dark text-white sidebar min-vh-100 p-3">
+                <div class="d-flex align-items-center mb-4">
+                    <h4 class="m-0 text-primary fw-bold">🚗 E-PARK PRO</h4>
+                </div>
+                <hr>
+                <ul class="nav flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link text-white text-opacity-75">📊 Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link text-white text-opacity-75">🅿️ Gerenciar Vagas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="relatorios.html" class="nav-link text-white bg-primary bg-opacity-25 rounded">📈 Relatórios</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <main class="col-md-10 ms-sm-auto px-md-4 pt-3">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Histórico e Faturação</h1>
+                </div>
+
+                <div class="bg-white p-4 rounded shadow-sm border">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Placa</th>
+                                    <th>Modelo</th>
+                                    <th>Entrada</th>
+                                    <th>Saída</th>
+                                    <th>Valor (R$)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-relatorios">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/relatorios.js"></script>
+</body>
+</html>

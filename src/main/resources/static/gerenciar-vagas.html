@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-PARK PRO - Gerir Vagas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+    <div class="container-fluid">
+        <div class="row">
+            
+            <nav class="col-md-2 d-none d-md-block bg-dark text-white sidebar min-vh-100 p-3">
+                <div class="d-flex align-items-center mb-4">
+                    <h4 class="m-0 text-primary fw-bold">🚗 E-PARK PRO</h4>
+                </div>
+                <hr>
+                <ul class="nav flex-column mb-auto">
+                    <li class="nav-item">
+                        <a href="index.html" class="nav-link text-white text-opacity-75">📊 Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="gerenciar-vagas.html" class="nav-link text-white bg-primary bg-opacity-25 rounded">🅿️ Gerenciar Vagas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="relatorios.html" class="nav-link text-white text-opacity-75">📈 Relatórios</a>
+                    </li>
+                </ul>
+            </nav>
+
+            <main class="col-md-10 ms-sm-auto px-md-4 pt-3">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Administração de Vagas</h1>
+                </div>
+
+                <div class="bg-white p-4 rounded shadow-sm border">
+                    <p class="text-muted">Utilize este painel para alterar manualmente o estado de uma vaga (Ex: Colocar em manutenção).</p>
+                    
+                    <div class="table-responsive mt-3">
+                        <table class="table table-hover align-middle border">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Identificador</th>
+                                    <th>Setor</th>
+                                    <th>Tipo</th>
+                                    <th>Estado Atual</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tabela-vagas">
+                                </tbody>
+                        </table>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalStatus" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header bg-dark text-white">
+                    <h5 class="modal-title">Alterar Estado</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Vaga selecionada: <strong id="modal-identificador-vaga">--</strong></p>
+                    <input type="hidden" id="modal-id-vaga">
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Novo Estado:</label>
+                        <select class="form-select" id="select-novo-status">
+                            <option value="LIVRE">LIVRE</option>
+                            <option value="OCUPADA">OCUPADA</option>
+                            <option value="MANUTENCAO">MANUTENÇÃO</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="guardarNovoEstado()">Guardar Alteração</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/gerenciar-vagas.js"></script>
+</body>
+</html>

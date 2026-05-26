@@ -7,6 +7,7 @@ import com.epark.epark_api.dto.TicketSaidaDTO;
 import com.epark.epark_api.service.TicketService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
@@ -50,5 +51,10 @@ public class TicketController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Ticket>> listarTodos() {
+        return ResponseEntity.ok(ticketService.listarTodos());
     }
 }
