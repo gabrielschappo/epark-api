@@ -5,6 +5,10 @@ import com.epark.epark_api.dto.ResumoVagasDTO;
 import com.epark.epark_api.repository.VagaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.epark.dto.GerarVagasDTO;
+import com.epark.epark_api.domain.Vaga.TipoVaga;
+import com.epark.epark_api.domain.Vaga.StatusVaga;
+import java.util.ArrayList;
 
 import java.util.List;
 
@@ -61,5 +65,41 @@ public class VagaService {
             throw new IllegalArgumentException("Já existe uma vaga com este identificador.");
         }
         return vagaRepository.save(vaga);
+    }
+
+    public void gerarVagasEmLote(GerarVagasDTO dto) {
+        List<Vaga> novasVagas = new ArrayList<>();
+        int numeroVaga = 1; // Contador para o sufixo (1, 2, 3...)
+
+        // 1. Gera as vagas Normais
+        for (int i = 0; i < dto.qtdNormal(); i++) {
+            novasVagas.add(criarVagaMapeada(dto, numeroVaga, TipoVaga.NORMAL));
+            numeroVaga++;
+        }
+
+        // 2. Gera as vagas PCD
+        for (int i = 0; i < dto.qtdPcd(); i++) {
+            novasVagas.add(criarVagaMapeada(dto, numeroVaga, TipoVaga.PCD));
+            numeroVaga++;
+        }
+
+        // 3. Gera as vagas Elétricas
+        for (int i = 0; i < dto.qtdEletrica(); i++) {
+            novasVagas.add(criarVagaMapeada(dto, numeroVaga, TipoVaga.ELETRICA));
+            numeroVaga++;
+        }
+
+        // Salva todas de uma vez no banco de dados
+        vagaRepository.saveAll(novasVagas);
+    }
+
+    // Método auxiliar privado para montar o objeto Vaga
+    private Vaga criarVagaMapeada(GerarVagasDTO dto, int numero, TipoVaga tipo) {
+        Vaga vaga = new Vaga();
+        vaga.setIdentificador(dto.prefixo() + numero); // Ex: "A" + 1 = "A1"
+        vaga.setSetor(dto.setor());
+        vaga.setTipo(tipo);
+        vaga.setStatus(StatusVaga.LIVRE); // Toda vaga nasce livre
+        return vaga;
     }
 }

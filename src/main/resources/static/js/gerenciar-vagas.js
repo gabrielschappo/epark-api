@@ -87,6 +87,56 @@ function guardarNovoEstado() {
     xhr.send();
 }
 
+function enviarLoteVagas() {
+    var setor = document.getElementById('input-setor').value;
+    var prefixo = document.getElementById('input-prefixo').value.toUpperCase();
+    var qtdNormal = parseInt(document.getElementById('input-qtd-normal').value) || 0;
+    var qtdPcd = parseInt(document.getElementById('input-qtd-pcd').value) || 0;
+    var qtdEletrica = parseInt(document.getElementById('input-qtd-eletrica').value) || 0;
+
+    if (!setor || !prefixo) {
+        alert('Por favor, preencha o Nome do Setor e o Prefixo.');
+        return;
+    }
+
+    if (qtdNormal === 0 && qtdPcd === 0 && qtdEletrica === 0) {
+        alert('Você precisa gerar pelo menos 1 vaga de algum tipo.');
+        return;
+    }
+
+    var payload = {
+        setor: setor,
+        prefixo: prefixo,
+        qtdNormal: qtdNormal,
+        qtdPcd: qtdPcd,
+        qtdEletrica: qtdEletrica
+    };
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', baseUrl + '/lote', true);
+    xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
+    
+    xhr.onload = function() {
+        if (xhr.status === 200 || xhr.status === 201) {
+            alert('Vagas geradas com sucesso!');
+            
+            // Fecha o modal do Bootstrap
+            var modalEl = document.getElementById('modalGerarVagas');
+            var modalObj = bootstrap.Modal.getInstance(modalEl);
+            if (modalObj) {
+                modalObj.hide();
+            }
+            
+            // Recarrega a tabela para mostrar as vagas novas
+            carregarVagas();
+        } else {
+            alert('Erro ao gerar vagas: ' + xhr.responseText);
+        }
+    };
+    
+    xhr.send(JSON.stringify(payload));
+}
+
 // Inicializa a página
 window.onload = function() {
     carregarVagas();

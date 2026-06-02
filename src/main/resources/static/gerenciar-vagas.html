@@ -36,7 +36,12 @@
                 </div>
 
                 <div class="bg-white p-4 rounded shadow-sm border">
-                    <p class="text-muted">Utilize este painel para alterar manualmente o estado de uma vaga (Ex: Colocar em manutenção).</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="text-muted m-0">Utilize este painel para alterar manualmente o estado de uma vaga.</p>
+                        <button class="btn btn-success fw-bold" data-bs-toggle="modal" data-bs-target="#modalGerarVagas">
+                            + Gerar Vagas em Lote
+                        </button>
+                    </div>
                     
                     <div class="table-responsive mt-3">
                         <table class="table table-hover align-middle border">
@@ -82,6 +87,46 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
                     <button type="button" class="btn btn-primary" onclick="guardarNovoEstado()">Guardar Alteração</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalGerarVagas" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Configuração Inicial de Vagas</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <label class="form-label fw-bold">Nome do Setor</label>
+                            <input type="text" id="input-setor" class="form-control" placeholder="Ex: Setor A1 (Subsolo)">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Prefixo</label>
+                            <input type="text" id="input-prefixo" class="form-control text-uppercase" placeholder="Ex: A" maxlength="2">
+                        </div>
+                        <hr class="my-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Qtd. Normais</label>
+                            <input type="number" id="input-qtd-normal" class="form-control" value="0" min="0">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Qtd. PCD</label>
+                            <input type="number" id="input-qtd-pcd" class="form-control" value="0" min="0">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Qtd. Elétricas</label>
+                            <input type="number" id="input-qtd-eletrica" class="form-control" value="0" min="0">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-success fw-bold" onclick="enviarLoteVagas()">Gerar Vagas</button>
                 </div>
             </div>
         </div>
