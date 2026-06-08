@@ -28,6 +28,11 @@ public class TicketService {
 
     @Transactional
     public Ticket registrarEntrada(String placa, String modeloVeiculo, Long idVaga, LocalDateTime horaEntrada) {
+        // Impede entrada duplicada para a mesma placa
+        if (ticketRepository.findByPlacaAndStatus(placa, Ticket.StatusTicket.ATIVO).isPresent()) {
+            throw new IllegalStateException("Já existe um ticket ativo para a placa " + placa + ". Registre a saída antes de uma nova entrada.");
+        }
+
         // TU06 - Bloqueio por Lotação Máxima
         long vagasDisponiveis = vagaRepository.countByStatus(Vaga.StatusVaga.LIVRE);
         if (vagasDisponiveis == 0) {

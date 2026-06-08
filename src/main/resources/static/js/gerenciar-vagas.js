@@ -45,7 +45,8 @@ function preencherTabelaVagas(vagas) {
             '<td>' + v.tipo + '</td>' +
             '<td><span class="badge ' + badgeClass + '">' + v.status + '</span></td>' +
             '<td class="text-center">' +
-                '<button class="btn btn-sm btn-outline-dark" onclick="abrirModalStatus(' + v.id + ', \'' + v.identificador + '\', \'' + v.status + '\')">✏️ Alterar</button>' +
+                '<button class="btn btn-sm btn-outline-dark me-1" onclick="abrirModalStatus(' + v.id + ', \'' + v.identificador + '\', \'' + v.status + '\')">✏️ Alterar</button>' +
+                '<button class="btn btn-sm btn-outline-danger" onclick="excluirVaga(' + v.id + ', \'' + v.identificador + '\')" ' + (v.status === 'OCUPADA' ? 'disabled title="Vaga ocupada"' : '') + '>🗑️ Excluir</button>' +
             '</td>';
             
         tr.innerHTML = htmlLinha;
@@ -84,6 +85,26 @@ function guardarNovoEstado() {
         }
     };
     
+    xhr.send();
+}
+
+function excluirVaga(id, identificador) {
+    if (!confirm('Tem certeza que deseja excluir a vaga ' + identificador + '? Esta ação não pode ser desfeita.')) {
+        return;
+    }
+
+    var xhr = new XMLHttpRequest();
+    xhr.open('DELETE', baseUrl + '/' + id, true);
+
+    xhr.onload = function() {
+        if (xhr.status === 204) {
+            carregarVagas();
+        } else {
+            var resposta = JSON.parse(xhr.responseText);
+            alert('Erro ao excluir: ' + (resposta.mensagem || xhr.responseText));
+        }
+    };
+
     xhr.send();
 }
 

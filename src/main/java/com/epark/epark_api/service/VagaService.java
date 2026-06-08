@@ -54,8 +54,28 @@ public class VagaService {
         Vaga vaga = vagaRepository.findById(idVaga)
                 .orElseThrow(() -> new IllegalArgumentException("Vaga não encontrada."));
 
+        if (vaga.getStatus() == Vaga.StatusVaga.OCUPADA && novoStatus != Vaga.StatusVaga.OCUPADA) {
+            throw new IllegalStateException(
+                    "Não é possível alterar o status da vaga " + vaga.getIdentificador() +
+                    " pois ela está ocupada. Registre a saída do veículo primeiro.");
+        }
+
         vaga.setStatus(novoStatus);
         return vagaRepository.save(vaga);
+    }
+
+    @Transactional
+    public void excluirVaga(Long idVaga) {
+        Vaga vaga = vagaRepository.findById(idVaga)
+                .orElseThrow(() -> new IllegalArgumentException("Vaga não encontrada."));
+
+        if (vaga.getStatus() == Vaga.StatusVaga.OCUPADA) {
+            throw new IllegalStateException(
+                    "Não é possível excluir a vaga " + vaga.getIdentificador() +
+                    " pois ela está ocupada. Registre a saída do veículo primeiro.");
+        }
+
+        vagaRepository.delete(vaga);
     }
 
     // Método para cadastrar as vagas inicialmente (Setup do banco)

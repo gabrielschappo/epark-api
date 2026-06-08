@@ -6,8 +6,7 @@ import com.epark.epark_api.service.VagaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.epark.dto.GerarVagasDTO;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -46,21 +45,15 @@ public class VagaController {
         return ResponseEntity.ok(vagaService.alterarStatusManual(id, novoStatus));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluirVaga(@PathVariable Long id) {
+        vagaService.excluirVaga(id);
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/lote")
-    public ResponseEntity<String> gerarVagasEmLote(@RequestBody GerarVagasDTO dto) {
-        try {
-            vagaService.gerarVagasEmLote(dto);
-            return ResponseEntity.ok("Vagas geradas com sucesso!");
-            
-        } catch (DataIntegrityViolationException e) {
-            // Captura especificamente o erro de tentar salvar dados duplicados (Unique Constraint)
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Não foi possível gerar: Já existem vagas utilizando este prefixo ou numeração.");
-            
-        } catch (Exception e) {
-            // Captura qualquer outro erro inesperado e devolve uma mensagem limpa
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Ocorreu um erro interno ao tentar gerar as vagas.");
-        }
+    public ResponseEntity<String> gerarVagasEmLote(@Valid @RequestBody GerarVagasDTO dto) {
+        vagaService.gerarVagasEmLote(dto);
+        return ResponseEntity.ok("Vagas geradas com sucesso!");
     }
 }
