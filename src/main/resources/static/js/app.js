@@ -137,16 +137,33 @@ function abrirPainelVaga(identificador) {
             } 
             // Monta o formulário de SAÍDA se estiver ocupada
             else if (vaga.status === 'OCUPADA') {
-                painelConteudo.innerHTML = 
+                painelConteudo.innerHTML =
                     '<h3 class="mb-1 text-secondary">Vaga ' + vaga.identificador + '</h3>' +
                     '<span class="badge bg-secondary mb-3">Ocupada</span>' +
                     '<hr>' +
                     '<p>Para liberar esta vaga e gerar a cobrança, confirme a placa do veículo que está saindo:</p>' +
                     '<div class="mb-4">' +
                         '<label class="form-label fw-bold">Placa do Veículo</label>' +
-                        '<input type="text" id="inputPlacaSaida" class="form-control text-uppercase" placeholder="ABC-1234" maxlength="8">' +
+                        '<input type="text" id="inputPlacaSaida" class="form-control text-uppercase" placeholder="Carregando..." maxlength="8">' +
                     '</div>' +
                     '<button class="btn btn-primary w-100 py-2 fw-bold" onclick="registrarSaida()">Calcular e Liberar Vaga</button>';
+
+                // Busca o ticket ativo da vaga e pré-preenche a placa
+                var xhrTicket = new XMLHttpRequest();
+                xhrTicket.open('GET', '/api/tickets/ativo/vaga/' + vaga.id, true);
+                xhrTicket.onload = function() {
+                    var inputPlaca = document.getElementById('inputPlacaSaida');
+                    if (inputPlaca) {
+                        if (xhrTicket.status === 200) {
+                            var ticket = JSON.parse(xhrTicket.responseText);
+                            inputPlaca.value = ticket.placa;
+                            inputPlaca.placeholder = 'ABC-1234';
+                        } else {
+                            inputPlaca.placeholder = 'ABC-1234';
+                        }
+                    }
+                };
+                xhrTicket.send();
             }
             // Bloqueia ações se estiver em manutenção
             else {

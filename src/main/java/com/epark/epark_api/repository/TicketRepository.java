@@ -15,4 +15,7 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     // Lista todos os tickets de um determinado status (Ex: Todos os CONCLUIDOS para o relatório financeiro)
     List<Ticket> findByStatus(Ticket.StatusTicket status);
+
+    // Busca o ticket ativo de uma vaga específica (para pré-preencher a placa na saída)
+    Optional<Ticket> findByVagaIdAndStatus(Long vagaId, Ticket.StatusTicket status);
 }

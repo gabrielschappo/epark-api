@@ -92,4 +92,9 @@ public class TicketService {
     public List<Ticket> listarTodos() {
         return ticketRepository.findAll();
     }
+
+    public Ticket buscarTicketAtivoPorVaga(Long vagaId) {
+        return ticketRepository.findByVagaIdAndStatus(vagaId, Ticket.StatusTicket.ATIVO)
+                .orElseThrow(() -> new IllegalArgumentException("Nenhum ticket ativo encontrado para esta vaga."));
+    }
 }

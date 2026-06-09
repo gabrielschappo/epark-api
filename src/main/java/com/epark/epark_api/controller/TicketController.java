@@ -45,4 +45,9 @@ public class TicketController {
     public ResponseEntity<List<Ticket>> listarTodos() {
         return ResponseEntity.ok(ticketService.listarTodos());
     }
+
+    @GetMapping("/ativo/vaga/{vagaId}")
+    public ResponseEntity<Ticket> buscarAtivoPorVaga(@PathVariable Long vagaId) {
+        return ResponseEntity.ok(ticketService.buscarTicketAtivoPorVaga(vagaId));
+    }
 }

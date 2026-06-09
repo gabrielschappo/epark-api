@@ -19,34 +19,47 @@ function carregarRelatorios() {
 function preencherTabela(tickets) {
     var corpoTabela = document.getElementById('tabela-relatorios');
     corpoTabela.innerHTML = '';
-    
+
     for (var i = 0; i < tickets.length; i++) {
         var t = tickets[i];
-        
-        // Formata os dados para evitar que fiquem nulos no ecrã
-        var placa = t.placa ? t.placa : '-';
-        var modelo = t.modeloVeiculo ? t.modeloVeiculo : '-';
-        
-        // Trata as datas, verificando se o veículo já saiu
-        var dataEnt = t.dataEntrada ? formatarData(t.dataEntrada) : '-';
-        var dataSai = t.dataSaida ? formatarData(t.dataSaida) : '<span class="badge bg-warning text-dark">Em curso</span>';
-        
-        // Trata o valor pago
-        var valor = t.valorPago !== null ? t.valorPago.toFixed(2).replace('.', ',') : '-';
-        
+
+        var placa = t.placa || '-';
+        var modelo = t.modeloVeiculo || '-';
+
+        var dataEnt = t.horaEntrada ? formatarData(t.horaEntrada) : '-';
+        var dataSai = t.horaSaida ? formatarData(t.horaSaida) : '<span class="badge bg-warning text-dark">Em curso</span>';
+
+        var valorCelula;
+        if (t.valorPago !== null && t.valorPago !== undefined) {
+            valorCelula = '<span class="fw-bold text-success">R$ ' + t.valorPago.toFixed(2).replace('.', ',') + '</span>';
+        } else if (t.horaEntrada) {
+            var estimado = calcularValorEstimado(t.horaEntrada);
+            valorCelula = '<span class="text-warning fw-bold" title="Valor estimado até agora">~R$ ' + estimado + '</span>';
+        } else {
+            valorCelula = '-';
+        }
+
         var tr = document.createElement('tr');
-        
-        var htmlLinha = 
+        tr.innerHTML =
             '<td>' + t.id + '</td>' +
             '<td class="fw-bold">' + placa + '</td>' +
             '<td>' + modelo + '</td>' +
             '<td>' + dataEnt + '</td>' +
             '<td>' + dataSai + '</td>' +
-            '<td class="fw-bold text-success">R$ ' + valor + '</td>';
-            
-        tr.innerHTML = htmlLinha;
+            '<td>' + valorCelula + '</td>';
+
         corpoTabela.appendChild(tr);
     }
+}
+
+// Mesma lógica do TarifaService: tolerância de 15 min, arredonda hora para cima, R$ 10/h
+function calcularValorEstimado(horaEntradaIso) {
+    var entrada = new Date(horaEntradaIso);
+    var agora = new Date();
+    var minutos = Math.floor((agora - entrada) / 60000);
+    if (minutos <= 15) return '0,00';
+    var horas = Math.ceil(minutos / 60);
+    return (horas * 10).toFixed(2).replace('.', ',');
 }
 
 // Função auxiliar para deixar a data amigável (Ex: 26/05/2026 14:30)
